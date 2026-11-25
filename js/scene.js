@@ -2,7 +2,8 @@
 // Màu lấy từ CONFIG.palette ('dusk' hoàng hôn vàng hoặc 'night')
 import * as THREE from 'three';
 import { CONFIG } from './config.js';
-import { Terrain } from './terrain.js';
+// TẠM TẮT cảnh núi non 3D (bị lag) — bỏ comment 3 chỗ có ghi "TẠM TẮT" để bật lại
+// import { Terrain } from './terrain.js';
 
 export function softDotTexture(size = 128, falloff = 0.45) {
   const c = document.createElement('canvas');
@@ -182,14 +183,15 @@ export function createWorld() {
   scene.add(heroLight);
 
   // --- Cảnh vật 3D vô tận (núi non, sông, cỏ cây, biển mây) — thay cho núi phẳng + mây cũ ---
-  const terrain = new Terrain(scene, P);
+  // TẠM TẮT: const terrain = new Terrain(scene, P);
+  const terrain = null;
 
   function update(dt, t, flightMul = 1) {
     const fs = S.flightSpeed * flightMul;
-    const useTerrain = S.terrain?.enabled;
+    const useTerrain = !!terrain && S.terrain?.enabled; // đang tạm tắt → dùng lại núi phẳng + mây cũ (nhẹ máy)
     for (const L of layers) L.mesh.visible = !useTerrain;
     for (const c of clouds) c.sprite.visible = !useTerrain;
-    terrain.update(dt, camera, fs);
+    // TẠM TẮT: terrain.update(dt, camera, fs);
     // bầu trời, sao, trăng luôn bao quanh camera (bay / lùi xa bao nhiêu cũng không chạm mép trời)
     sky.position.copy(camera.position);
     stars.position.copy(camera.position);

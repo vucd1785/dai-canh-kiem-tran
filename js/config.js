@@ -3,6 +3,7 @@
 // ============================================================
 import { loadSaved, applyPreset } from './settings.js';
 import { USER_DEFAULTS } from './defaults.js';
+import { applyLight, getQuality } from './presets.js';
 
 export const CONFIG = {
   // --- Kiếm luân sau lưng: 2 LỚP (trước / sau) xoay NGƯỢC nhau, mỗi lớp gồm 2 VÒNG (trong + ngoài) ---
@@ -436,6 +437,9 @@ export const CONFIG = {
 // Nạp các thông số bạn đã bấm "Lưu làm mặc định" (lưu trong trình duyệt) đè lên giá trị ở trên
 applyPreset(CONFIG, USER_DEFAULTS); // cấu hình mặc định của người dùng (js/defaults.js)
 CONFIG.loadedSaved = loadSaved(CONFIG);
+// Chế độ NHẸ MÁY (nút 🐢): ít kiếm hơn, tắt hiệu ứng nặng — áp đè lên, không đổi cấu hình mặc định
+CONFIG.quality = getQuality();
+if (CONFIG.quality === 'light') applyLight(CONFIG);
 
 // Trạng thái giao diện lúc chạy (không lưu): vòng đang được chỉnh trong bảng Thông số (-1 = không có)
 CONFIG.ui = { focusRing: -1 };

@@ -6,6 +6,7 @@ import GUI from 'three/addons/libs/lil-gui.module.min.js';
 import { CONFIG } from './config.js';
 import { saveSettings, clearSettings, snapshot } from './settings.js';
 import { refreshGlyph } from './effects/rune.js';
+import { setQuality, restoreLightInSnapshot } from './presets.js';
 
 // lil-gui 0.17 (đi kèm three r160) chưa có onOpenClose → tự móc vào open/openAnimated của thư mục.
 // cb(isOpen) chạy mỗi khi thư mục đó (không tính thư mục con) được mở hoặc đóng.
@@ -68,7 +69,7 @@ export function buildPanel(ctx) {
     },
     copy: async () => {
       CONFIG.speed.default = getSwarm().speedMul;
-      const json = JSON.stringify(snapshot(CONFIG), null, 2);
+      const json = JSON.stringify(restoreLightInSnapshot(CONFIG, snapshot(CONFIG)), null, 2);
       try { await navigator.clipboard.writeText(json); status.text = '✓ Đã sao chép vào clipboard'; }
       catch { console.log(json); status.text = 'Không sao chép được — xem Console (F12)'; }
     },
@@ -82,6 +83,7 @@ export function buildPanel(ctx) {
   gSave.add(act, 'save').name('💾 Lưu làm mặc định');
   gSave.add(act, 'copy').name('📋 Sao chép cấu hình');
   gSave.add(act, 'reset').name('↺ Về mặc định gốc');
+  gSave.add({ get q() { return CONFIG.quality; }, set q(v) { setQuality(v); location.reload(); } }, 'q', { '🐢 Nhẹ máy (mặc định)': 'light', '✨ Đầy đủ (nhiều kiếm, đủ hiệu ứng)': 'full' }).name('Cấu hình chạy');
   gSave.add(status, 'text').name('Trạng thái').disable().listen();
 
   // ---------------- ⚔ Kiếm luân ----------------
@@ -448,12 +450,12 @@ export function buildPanel(ctx) {
     'p', { 'Thảo nguyên ban đêm (tối)': 'steppeNight', 'Thảo nguyên ban ngày': 'steppe', 'Đêm tím': 'night', 'Hoàng hôn': 'dusk' }).name('Cảnh (tải lại trang)');
   gCanh.add(CONFIG.view, 'exposure', 0.4, 3, 0.05).name('☀ Độ sáng cảnh').onChange((v) => { const r = window.__phiKiem?.renderer; if (r) r.toneMappingExposure = v; });
   gCanh.add(CONFIG.scene, 'flightMul', 0, 3, 0.1).name('Tốc độ bay');
-  const TR = CONFIG.scene.terrain, regen = () => terrain?.anchor.set(1e9, 1e9); // dựng lại cảnh ngay
-  gCanh.add(TR, 'enabled').name('Cảnh núi non 3D (cỏ cây, sông, mây)');
-  gCanh.add(TR, 'mountainHeight', 10, 220, 1).name('Núi cao').onFinishChange(regen);
-  gCanh.add(TR, 'groundY', -150, -10, 1).name('Mặt đất thấp hơn nhân vật').onFinishChange(regen);
-  gCanh.add(TR, 'valleyHalf', 10, 300, 1).name('Thung lũng rộng').onFinishChange(regen);
-  gCanh.add(TR, 'treeDensity', 0, 1, 0.05).name('Mật độ cây').onFinishChange(regen);
+  // TẠM TẮT (cảnh 3D đang tắt): const TR = CONFIG.scene.terrain, regen = () => terrain?.anchor.set(1e9, 1e9); // dựng lại cảnh ngay
+  // TẠM TẮT (cảnh 3D đang tắt): gCanh.add(TR, 'enabled').name('Cảnh núi non 3D (cỏ cây, sông, mây)');
+  // TẠM TẮT (cảnh 3D đang tắt): gCanh.add(TR, 'mountainHeight', 10, 220, 1).name('Núi cao').onFinishChange(regen);
+  // TẠM TẮT (cảnh 3D đang tắt): gCanh.add(TR, 'groundY', -150, -10, 1).name('Mặt đất thấp hơn nhân vật').onFinishChange(regen);
+  // TẠM TẮT (cảnh 3D đang tắt): gCanh.add(TR, 'valleyHalf', 10, 300, 1).name('Thung lũng rộng').onFinishChange(regen);
+  // TẠM TẮT (cảnh 3D đang tắt): gCanh.add(TR, 'treeDensity', 0, 1, 0.05).name('Mật độ cây').onFinishChange(regen);
   gCanh.add(CONFIG.camFollow, 'enabled').name('Phi kiếm xa: camera tự lùi theo');
   gCanh.add(CONFIG.view, 'minDistance', 0.3, 8, 0.1).name('Zoom gần nhất (nhỏ = to hơn)').onChange((v) => (controls.minDistance = v));
 

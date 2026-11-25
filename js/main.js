@@ -7,6 +7,7 @@ import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js'
 import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
 
 import { CONFIG } from './config.js';
+import { setQuality } from './presets.js';
 import { createWorld, softDotTexture } from './scene.js';
 import { createSwordGeometry, createSwordMaterial, createShellGeometry, createShellMaterial } from './sword.js';
 import { HiltDust } from './effects/hiltdust.js';
@@ -251,7 +252,7 @@ composer.addPass(new OutputPass());
 const gesture = new GestureController($('cam-video'), $('cam-overlay'));
 let gui;
 const ui = {
-  toggleHelp: () => $('help').classList.toggle('hidden'),
+  toggleHelp: () => { $('help').classList.remove('hidden'); $('help').classList.toggle('collapsed'); fitHelp(); },
   toggleGui: () => gui.show(gui._hidden),
   // Bật / tắt camera (nút trên HUD hoặc phím C)
   toggleCamera: () => (gesture.ready ? ui.stopCamera() : ui.startCamera()),
@@ -289,6 +290,22 @@ const ui = {
 const input = new InputManager({ swarm, lightning, sparks, camera, controls, canvas, hero, gesture, ui });
 inputRef = input;
 $('btn-camera').addEventListener('click', ui.toggleCamera);
+// Nút NHẸ MÁY: bật / tắt cấu hình nhẹ (tải lại trang để dựng lại với ít kiếm hơn)
+{
+  const b = $('btn-light'), light = CONFIG.quality === 'light';
+  b.textContent = light ? '🐢 Đang: Nhẹ máy · bấm để chuyển ✨ Đầy đủ' : '✨ Đang: Đầy đủ · bấm để về 🐢 Nhẹ máy';
+  b.classList.toggle('on', !light);
+  b.addEventListener('click', () => { setQuality(light ? 'full' : 'light'); location.reload(); });
+}
+// Bảng phím tắt: bấm nút để mở / thu gọn; luôn giữ dưới khung HUD (có nút bật camera) — không che nhau
+$('help-toggle').addEventListener('click', ui.toggleHelp);
+function fitHelp() {
+  const top = $('hud').getBoundingClientRect().bottom + 12;
+  $('help').style.maxHeight = Math.max(60, innerHeight - top - 12) + 'px';
+}
+addEventListener('resize', fitHelp);
+new ResizeObserver(fitHelp).observe($('hud'));
+fitHelp();
 
 // --- Bảng chỉnh thông số (xem js/panel.js) ---
 lightning.rateMul = CONFIG.lightning.rateMul;

@@ -27,30 +27,42 @@
     <div class="row"><span>Tốc độ</span><b id="hud-speed">1.00×</b></div>
     <div class="row"><span>FPS</span><b id="hud-fps">0</b></div>
     <button id="btn-camera">📷 Bật camera</button>
+    <button id="btn-light" title="Nhẹ máy (mặc định): ít kiếm, ít hiệu ứng · Đầy đủ: nhiều kiếm, đủ hiệu ứng">🐢 Nhẹ máy</button>
     <div id="cam-status"></div>
   </div>
 
-  <div id="help" class="panel">
-    <div class="title">Điều khiển <small>(H để ẩn/hiện)</small></div>
-    <table>
-      <tr><th>Cử chỉ</th><th>Phím</th><th>Lệnh</th></tr>
-      <tr><td>Thả lỏng tay</td><td>1</td><td>Kiếm luân sau lưng: 2 lớp xoay ngược nhau, mỗi lớp 2 vòng (chụm/mở ngón cái–trỏ chỉnh bán kính)</td></tr>
-      <tr><td>✋ Xòe tay</td><td>2</td><td>Tung kiếm (kiếm luân nở rộng)</td></tr>
-      <tr><td>✊ Nắm tay</td><td>3</td><td>Kiếm thuẫn hộ thân (2 lớp cầu xoay ngược)</td></tr>
-      <tr><td>☝️ Giơ ngón trỏ</td><td>4</td><td>Phóng kiếm theo đầu ngón tay (phím: theo chuột)</td></tr>
-      <tr><td>—</td><td>5</td><td>Kiếm trận xoắn + bùng sét</td></tr>
-      <tr><td>—</td><td>6</td><td>Thu kiếm</td></tr>
-      <tr><td>✌️ Chữ V</td><td>7</td><td>Tụ vòng kiếm: kiếm bay nối đuôi thành dòng rồi xếp thành các vòng tròn, mũi chĩa ra</td></tr>
-      <tr><td>—</td><td>0</td><td>🐉 Kim long: phi kiếm ghép thành rồng vàng bay lượn quanh nhân vật, sấm sét bao quanh</td></tr>
-      <tr><td>—</td><td>9</td><td>🎯 Bắn kiếm: kiếm xếp trước / sau nhân vật xen kẽ, mũi chĩa về đối phương (theo chuột) rồi bay thẳng tới</td></tr>
-      <tr><td>—</td><td>8</td><td>🗡 Cự kiếm: kiếm chĩa xuống đất dàn hàng xa gần rồi gộp thành 1 thanh kiếm khổng lồ có sấm sét</td></tr>
-      <tr><td>👍 / 👎 giữ</td><td>+ / −</td><td>Tăng / giảm tốc độ</td></tr>
-      <tr><td>🤟 I love you</td><td>Space</td><td>Về mặc định</td></tr>
-      <tr><td>🕊 Bay</td><td>W A S D / ← ↑ → ↓</td><td>Bay tới / lui / trái / phải (theo hướng camera) · R / F lên / xuống · giữ Shift bay nhanh</td></tr>
-      <tr><td>Di bàn tay</td><td>Kéo chuột</td><td>Xoay trận kiếm / xoay camera</td></tr>
-      <tr><td>Hai tay xa–gần</td><td>Cuộn chuột</td><td>Zoom</td></tr>
-      <tr><td>—</td><td>L · T · G · C</td><td>Bùng sét · bật/tắt vệt · bảng thông số · bật/tắt camera</td></tr>
-    </table>
+  <!-- Bảng phím tắt: mặc định thu gọn thành 1 nút nhỏ (bấm hoặc phím H để mở); khi mở không bao giờ cao quá khung camera ở trên -->
+  <div id="help" class="panel collapsed">
+    <button id="help-toggle" type="button">❔ Phím tắt &amp; cử chỉ <kbd>H</kbd></button>
+    <div class="help-body">
+      <div class="sec">Chế độ kiếm</div>
+      <div class="grid">
+        <div><kbd>1</kbd> Kiếm luân <i>✋ thả lỏng</i></div>
+        <div><kbd>2</kbd> Tung kiếm <i>🖐 xoè tay</i></div>
+        <div><kbd>3</kbd> Kiếm thuẫn <i>✊ nắm tay</i></div>
+        <div><kbd>4</kbd> Phóng kiếm <i>☝️ ngón trỏ</i></div>
+        <div><kbd>5</kbd> Kiếm trận xoắn</div>
+        <div><kbd>6</kbd> Thu kiếm</div>
+        <div><kbd>7</kbd> Tụ vòng kiếm <i>✌️ chữ V</i></div>
+        <div><kbd>8</kbd> 🗡 Cự kiếm</div>
+        <div><kbd>9</kbd> 🎯 Bắn kiếm <i>theo chuột</i></div>
+        <div><kbd>0</kbd> 🐉 Kim long</div>
+      </div>
+      <div class="sec">Bay &amp; camera</div>
+      <div class="grid">
+        <div><kbd>W A S D</kbd> / <kbd>←↑→↓</kbd> bay</div>
+        <div><kbd>R</kbd> / <kbd>F</kbd> lên / xuống · <kbd>Shift</kbd> nhanh</div>
+        <div>Kéo chuột: xoay camera</div>
+        <div>Cuộn chuột: zoom <i>🙌 2 tay xa–gần</i></div>
+        <div><kbd>Space</kbd> về mặc định <i>🤟</i></div>
+        <div><kbd>+</kbd> / <kbd>−</kbd> tốc độ <i>👍 / 👎</i></div>
+      </div>
+      <div class="sec">Khác</div>
+      <div class="grid">
+        <div><kbd>L</kbd> bùng sét · <kbd>T</kbd> vệt kiếm</div>
+        <div><kbd>G</kbd> bảng thông số · <kbd>C</kbd> camera</div>
+      </div>
+    </div>
   </div>
 
   <div id="cam-box" hidden>

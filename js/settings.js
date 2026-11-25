@@ -1,5 +1,7 @@
 // Lưu / nạp các thông số chỉnh trong bảng Thông số (lưu trong trình duyệt bằng localStorage).
 // Chỉ lưu những giá trị chỉnh được trong bảng (TUNABLES), các thiết kế khác vẫn lấy từ config.js.
+import { restoreLightInSnapshot } from './presets.js';
+
 export const STORAGE_KEY = 'phiKiem.settings.v1';
 
 export const TUNABLES = [
@@ -63,7 +65,8 @@ export function loadSaved(CONFIG) {
 }
 
 export function saveSettings(CONFIG) {
-  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(snapshot(CONFIG))); return true; }
+  // đang Nhẹ máy → lưu giá trị gốc (trước khi giảm) để cấu hình mặc định giữ nguyên
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(restoreLightInSnapshot(CONFIG, snapshot(CONFIG)))); return true; }
   catch { return false; }
 }
 
