@@ -1,0 +1,56 @@
+* { box-sizing: border-box; }
+html, body { margin: 0; height: 100%; overflow: hidden; background: #0a0618; color: #e8e4ff;
+  font: 13px/1.4 system-ui, "Segoe UI", Roboto, sans-serif; }
+#scene { position: fixed; inset: 0; width: 100%; height: 100%; display: block; touch-action: none; }
+
+.panel { position: fixed; background: rgba(14, 8, 34, 0.62); border: 1px solid rgba(140, 255, 214, 0.18);
+  border-radius: 10px; padding: 10px 12px; backdrop-filter: blur(6px); }
+.panel .title { font-weight: 700; color: #8affd6; letter-spacing: .04em; margin-bottom: 6px; }
+.panel .title small { font-weight: 400; color: #a99fd0; }
+
+#hud { top: 12px; left: 12px; min-width: 220px; }
+#hud .row { display: flex; justify-content: space-between; gap: 12px; }
+#hud .row span { color: #a99fd0; }
+#hud .row b { font-weight: 600; text-align: right; }
+#btn-camera { margin-top: 8px; width: 100%; padding: 7px; border-radius: 7px; border: 1px solid #3dffb0;
+  background: rgba(61, 255, 176, .12); color: #c9ffe9; font: inherit; cursor: pointer; }
+#btn-camera:hover:not(:disabled) { background: rgba(61, 255, 176, .25); }
+#btn-camera:disabled { opacity: .7; cursor: default; }
+#btn-camera.on { border-color: #ff8a7a; background: rgba(255, 110, 90, .14); color: #ffd9d3; } /* đang bật → bấm để tắt */
+#btn-camera.on:hover:not(:disabled) { background: rgba(255, 110, 90, .26); }
+#cam-status { margin-top: 4px; color: #ffd76a; min-height: 1em; font-size: 12px; }
+
+#help { left: 12px; bottom: 12px; max-width: min(520px, calc(100vw - 24px)); }
+#help.hidden { display: none; }
+#help table { border-collapse: collapse; font-size: 12px; }
+#help th { text-align: left; color: #a99fd0; font-weight: 500; padding: 2px 10px 4px 0; }
+#help td { padding: 2px 10px 2px 0; vertical-align: top; }
+#help td:nth-child(2) { color: #ffd76a; white-space: nowrap; }
+
+/* Khung camera: góc dưới bên phải */
+:root { --cam-w: 240px; --cam-h: 180px; --gap: 12px; }
+#cam-box { position: fixed; right: var(--gap); bottom: var(--gap); width: var(--cam-w); height: var(--cam-h);
+  border-radius: 10px; overflow: hidden; border: 1px solid rgba(140, 255, 214, .35); background: #000; z-index: 5; }
+#cam-box video, #cam-box canvas { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
+  transform: scaleX(-1); /* soi gương */ }
+
+/* Bảng Thông số (lil-gui): góc trên bên phải, cuộn khi dài.
+   Khi camera bật → tự thu ngắn để chừa chỗ cho khung camera, không đè lên nhau. */
+.lil-gui.autoPlace { top: var(--gap); right: var(--gap); max-height: calc(100vh - 2 * var(--gap));
+  overflow-y: auto; border-radius: 8px; z-index: 6; }
+body.cam-on .lil-gui.autoPlace { max-height: calc(100vh - 3 * var(--gap) - var(--cam-h)); }
+
+/* Giao diện bảng Thông số: chữ rõ, cột tên rộng, nhóm cấp 1 nổi bật, nhóm con thụt vào */
+.pk-panel { --name-width: 48%; --font-size: 12.5px; --widget-height: 22px; --spacing: 5px;
+  --background-color: rgba(14, 10, 30, .92); --title-background-color: #1d1640; --focus-color: #3dffb0;
+  --number-color: #8affd6; --string-color: #ffd76a; box-shadow: 0 6px 24px rgba(0,0,0,.45); }
+.pk-panel > .children > .lil-gui > .title { background: #251a4d; color: #c9ffe9; font-weight: 600;
+  padding-top: 3px; padding-bottom: 3px; border-top: 1px solid rgba(140,255,214,.12); }
+.pk-panel .lil-gui .lil-gui .title { color: #b9f5dc; }
+.pk-panel .lil-gui .lil-gui .lil-gui .title { color: #ffe3a0; } /* thư mục từng vòng */
+.pk-panel .controller.function .name { text-align: center; }
+
+@media (max-width: 640px) {
+  #help { display: none; }
+  :root { --cam-w: 160px; --cam-h: 120px; }
+}

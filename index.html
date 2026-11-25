@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Phi Kiếm Trận</title>
+  <link rel="stylesheet" href="css/style.css">
+  <!-- font thư pháp chữ Hán cho chữ trên lưỡi kiếm (天宇) -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Zhi+Mang+Xing&family=Liu+Jian+Mao+Cao&display=swap">
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+      }
+    }
+  </script>
+</head>
+<body>
+  <canvas id="scene"></canvas>
+
+  <div id="hud" class="panel">
+    <div class="title">Phi Kiếm Trận <small id="ver" style="opacity:.55;font-weight:400">· bản 24/11 · có Cự kiếm</small></div>
+    <div class="row"><span>Trạng thái</span><b id="hud-state">Xoay quanh</b></div>
+    <div class="row"><span>Cử chỉ</span><b id="hud-gesture">—</b></div>
+    <div class="row"><span>Số tay</span><b id="hud-hands">—</b></div>
+    <div class="row"><span>Tốc độ</span><b id="hud-speed">1.00×</b></div>
+    <div class="row"><span>FPS</span><b id="hud-fps">0</b></div>
+    <button id="btn-camera">📷 Bật camera</button>
+    <div id="cam-status"></div>
+  </div>
+
+  <div id="help" class="panel">
+    <div class="title">Điều khiển <small>(H để ẩn/hiện)</small></div>
+    <table>
+      <tr><th>Cử chỉ</th><th>Phím</th><th>Lệnh</th></tr>
+      <tr><td>Thả lỏng tay</td><td>1</td><td>Kiếm luân sau lưng: 2 lớp xoay ngược nhau, mỗi lớp 2 vòng (chụm/mở ngón cái–trỏ chỉnh bán kính)</td></tr>
+      <tr><td>✋ Xòe tay</td><td>2</td><td>Tung kiếm (kiếm luân nở rộng)</td></tr>
+      <tr><td>✊ Nắm tay</td><td>3</td><td>Kiếm thuẫn hộ thân (2 lớp cầu xoay ngược)</td></tr>
+      <tr><td>☝️ Giơ ngón trỏ</td><td>4</td><td>Phóng kiếm theo đầu ngón tay (phím: theo chuột)</td></tr>
+      <tr><td>—</td><td>5</td><td>Kiếm trận xoắn + bùng sét</td></tr>
+      <tr><td>—</td><td>6</td><td>Thu kiếm</td></tr>
+      <tr><td>✌️ Chữ V</td><td>7</td><td>Tụ vòng kiếm: kiếm bay nối đuôi thành dòng rồi xếp thành các vòng tròn, mũi chĩa ra</td></tr>
+      <tr><td>—</td><td>0</td><td>🐉 Kim long: phi kiếm ghép thành rồng vàng bay lượn quanh nhân vật, sấm sét bao quanh</td></tr>
+      <tr><td>—</td><td>9</td><td>🎯 Bắn kiếm: kiếm xếp trước / sau nhân vật xen kẽ, mũi chĩa về đối phương (theo chuột) rồi bay thẳng tới</td></tr>
+      <tr><td>—</td><td>8</td><td>🗡 Cự kiếm: kiếm chĩa xuống đất dàn hàng xa gần rồi gộp thành 1 thanh kiếm khổng lồ có sấm sét</td></tr>
+      <tr><td>👍 / 👎 giữ</td><td>+ / −</td><td>Tăng / giảm tốc độ</td></tr>
+      <tr><td>🤟 I love you</td><td>Space</td><td>Về mặc định</td></tr>
+      <tr><td>🕊 Bay</td><td>W A S D / ← ↑ → ↓</td><td>Bay tới / lui / trái / phải (theo hướng camera) · R / F lên / xuống · giữ Shift bay nhanh</td></tr>
+      <tr><td>Di bàn tay</td><td>Kéo chuột</td><td>Xoay trận kiếm / xoay camera</td></tr>
+      <tr><td>Hai tay xa–gần</td><td>Cuộn chuột</td><td>Zoom</td></tr>
+      <tr><td>—</td><td>L · T · G · C</td><td>Bùng sét · bật/tắt vệt · bảng thông số · bật/tắt camera</td></tr>
+    </table>
+  </div>
+
+  <div id="cam-box" hidden>
+    <video id="cam-video" playsinline muted></video>
+    <canvas id="cam-overlay"></canvas>
+  </div>
+
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>
